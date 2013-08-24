@@ -1,7 +1,15 @@
 <html>
 
 <head>
- <script type="text/JavaScript">
+
+<!--
+//Third-party javascript queue
+//http://code.stephenmorley.org/javascript/queues/ -->
+<script type="text/javascript" src="Queue.js"></script>
+
+<script type="text/JavaScript">
+
+var frontier = new Queue();
 
 //1.0
 function writeOneRow(num, rowIndex) {
@@ -89,26 +97,25 @@ function generateMines(dimension){
 
 
 function notMine(id){
-			
+		 frontier.enqueue(id);
          document.getElementById(id).style.background="white";
          var IDs = getSurroundingIDs_NoDiag(id);
-      //   document.getElementById(id).style.background="red"; //current id highlight red debug
-         for (var i=0; i<=IDs.length; i++){
-     //        if(document.getElementById(IDs[i])){  //if element does not exist, will return false
+         for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
-      //                if (document.getElementById(IDs[i]).style.background!="white"){
                       	 if (document.getElementById(IDs[i]).innerHTML!="m"){
-                        	 notMine(IDs[i]);
+                        	 frontier.enqueue(IDs[i]); //this needs to be enqued
                          }
-        //               }
                   }
                   else{
               		    if (document.getElementById(IDs[i]).innerHTML!="m"){
                  		     document.getElementById(IDs[i]).innerHTML=getCountOfSurroundingMines(IDs[i]);
                  		}
                   }
-      //       }
          }
+         var item = frontier.dequeue();      //all squares that can be explored have been added to the frontier
+		 if (!(frontier.isEmpty())){
+		 	notMine(frontier.dequeue());     //perform another round of breadth-first search on the front item in the frontier
+		 }
 }
 
 function labelAsMine(id){
