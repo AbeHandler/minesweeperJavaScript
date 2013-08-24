@@ -35,14 +35,11 @@ function getSurroundingIDs(id){
          var onesPlace = parseInt(id.split("-", 2)[0]);
          var tensPlace = parseInt(id.split("-", 2)[1]);  //split on -, return 2 tokens
          var IDs = new Array();
-         IDs[IDs.length]=(onesPlace-1)+"-"+(tensPlace-1);
-         IDs[IDs.length]=(onesPlace-1)+"-"+tensPlace;
-	     IDs[IDs.length]=(onesPlace-1)+"-"+(tensPlace+1);
-	     IDs[IDs.length]=onesPlace+"-"+(tensPlace-1);
-         IDs[IDs.length]=onesPlace+"-"+(tensPlace+1);
-	     IDs[IDs.length]=(onesPlace+1)+"-"+(tensPlace-1);
-         IDs[IDs.length]=(onesPlace+1)+"-"+tensPlace;
-         IDs[IDs.length]=(onesPlace+1)+"-"+(tensPlace+1);
+         for (var row=onesPlace-1;row<=onesPlace+1;row++){
+        	 for (var col=tensPlace-1;col<=tensPlace+1;col++){
+         		 if(document.getElementById(row + "-" + col)){IDs[IDs.length]=row+"-"+col;}
+         	}
+         }
 	 return IDs;
 }
 
