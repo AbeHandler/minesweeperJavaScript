@@ -72,7 +72,7 @@ function setNumbers(dimension){
                       document.getElementById(i+"-"+j).innerHTML="m";
                  }
                  else{
-              //        document.getElementById(i+"-"+j).innerHTML=""+ getCountOfSurroundingMines(i+"-"+j)+"";
+                      document.getElementById(i+"-"+j).innerHTML=""+ getCountOfSurroundingMines(i+"-"+j)+"";
                  }
              }
          }
@@ -92,24 +92,25 @@ function generateMines(dimension){
 
 
 function notMine(id){
+			
          document.getElementById(id).style.background="white";
          var IDs = getSurroundingIDs_NoDiag(id);
-         
+      //   document.getElementById(id).style.background="red"; //current id highlight red debug
          for (var i=0; i<=IDs.length; i++){
-             if(document.getElementById(IDs[i])){  //if element does not exist, will return false
+     //        if(document.getElementById(IDs[i])){  //if element does not exist, will return false
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
-                      if (document.getElementById(IDs[i]).style.background!="white"){
+      //                if (document.getElementById(IDs[i]).style.background!="white"){
                       	 if (document.getElementById(IDs[i]).innerHTML!="m"){
                         	 notMine(IDs[i]);
                          }
-                       }
+        //               }
                   }
                   else{
               		    if (document.getElementById(IDs[i]).innerHTML!="m"){
                  		     document.getElementById(IDs[i]).innerHTML=getCountOfSurroundingMines(IDs[i]);
                  		}
                   }
-             }
+      //       }
          }
 }
 
@@ -121,10 +122,32 @@ function getSurroundingIDs_NoDiag(id){
          var col = parseInt(id.split("-", 2)[1]); //split on -, return 2 tokens
          var row = parseInt(id.split("-", 2)[0]);
          var IDs = new Array();
-         IDs[0]= (row+1) + "-" + col ;
-         IDs[1]= (row-1) + "-" + col;
-         IDs[2]= row + "-" +(col-1);
-         IDs[3]= row +"-"+(col+1);
+         var idCount = 0;
+          
+         if(document.getElementById((row+1) + "-" + col)){                            //if the element exists
+         	if (document.getElementById((row+1) + "-" + col).style.background!="white"){   //white nodes have been explored
+          	   IDs[idCount]= (row+1) + "-" + col ; 
+           	   idCount++;
+        	 }    
+         }
+         if(document.getElementById((row-1) + "-" + col)){ 
+        	 if (document.getElementById((row-1) + "-" + col).style.background!="white"){   //white nodes have been explored
+        	     IDs[idCount]= (row-1) + "-" + col ; 
+         	    idCount++;
+        	 } 
+         }
+         if(document.getElementById(row + "-" + (col-1))){ 
+         	if (document.getElementById(row + "-" + (col-1)).style.background!="white"){   //white nodes have been explored
+           	     IDs[idCount]= row + "-" + (col-1) ; 
+           	     idCount++;
+        	 }         
+         }
+         if(document.getElementById(row + "-" + (col+1))){ 
+        	 if (document.getElementById(row + "-" + (col+1)).style.background!="white"){   //white nodes have been explored
+            	 IDs[idCount]= row + "-" + (col+1); 
+            	 idCount++;
+         	}
+         }
          return IDs;
 }
 
