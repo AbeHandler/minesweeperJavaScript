@@ -11,8 +11,8 @@ function writeOneRow(num, rowIndex) {
      
          var start = "<div onclick='javascript:notMine(\"";
          var start2= "\");return false;' style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px' id='";
-	     var startMine = "<div  onclick='javascript:Mine();return false;' oncontextmenu='javascript:labelAsMine('"
-         var endMine = "') ;return false; style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px'; id='";
+	     var startMine = "<div  onclick=\"javascript:Mine();return false;\" oncontextmenu=\"javascript:labelAsMine('"
+         var endMine = "')\";return false; style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px'; id='";
          var end="'></div>";
          var string ="";
          for (i=0;i<num;i++){
@@ -128,7 +128,7 @@ function notMine(id){
 }
 
 function labelAsMine(id){
-	alert("minesito!");
+	document.getElementById(id).style.background="red";
 }
 
 function getSurroundingIDs_NoDiag(id){
