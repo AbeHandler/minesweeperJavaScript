@@ -8,6 +8,7 @@ var frontier = [];
 
 //1.0
 function writeOneRow(num, rowIndex) {
+     
          var start = "<div onclick='javascript:notMine(\"";
          var start2= "\");return false;' style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px' id='";
 	     var startMine = "<div  onclick='javascript:Mine();return false;' oncontextmenu='javascript:labelAsMine('"
@@ -23,9 +24,7 @@ function writeOneRow(num, rowIndex) {
                 string= string+ startMine + curID + endMine + curID + end;       //this line is the mines
              }
          }
-         var line = document.createElement('div');
-         line.innerHTML = "<div style='border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;'>" + string + "</div>" ;
-         document.body.appendChild(line);
+         return "<div style='border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;'>" + string + "</div>" ;
  }
 
 
@@ -57,11 +56,14 @@ function getCountOfSurroundingMines(id){
 }
 
 function writeRows(loop) {
+		 document.getElementById('game').innerHTML = ""; //reset the game
          generateMines(loop);
          var i =0;
+         var gameHTML = "";
          for (i=0;i<loop;i++){
-             writeOneRow(loop,i);
+             gameHTML = gameHTML + writeOneRow(loop,i);
          }
+         document.getElementById('game').innerHTML=gameHTML;
          setNumbers(loop);
 }
 
@@ -82,7 +84,8 @@ function setNumbers(dimension){
 function generateMines(dimension){
    var size = Math.floor(.15625*dimension*dimension);
    myMines=new Array();
- /*  myMines[myMines.length]="1-7";
+ /*useful for debugging 
+   myMines[myMines.length]="1-7";
    myMines[myMines.length]="2-5";
    myMines[myMines.length]="3-5";
    myMines[myMines.length]="3-7";
@@ -164,6 +167,26 @@ function getSurroundingIDs_NoDiag(id){
 </script>
 </head>
 <body>
-<a href="#" onclick="javascript:writeRows(10);return false;">Play</a>
+
+<div id='wholePage'>
+
+	<div id='gamePanel'>
+
+		<div id='game'>
+
+		</div>
+
+		<div id='controls'>
+			<div id='buttons'>
+				<button onclick="javascript:writeRows(10);return false;">Small</button> 
+				<button onclick="javascript:writeRows(15);return false;">Medium</button>
+				<button onclick="javascript:writeRows(20);return false;">Large</button>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
 </body>
 </html>
