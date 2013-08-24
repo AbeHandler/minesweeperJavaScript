@@ -1,0 +1,136 @@
+<html>
+
+<head>
+ <script type="text/JavaScript">
+
+//1.0
+function writeOneRow(num, rowIndex) {
+         var start = "<div onclick='javascript:notMine(\"";
+         var start2= "\");return false;' style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px' id='";
+	     var startMine = "<div  onclick='javascript:Mine();return false;' oncontextmenu='javascript:labelAsMine('"
+         var endMine = "') ;return false; style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px'; id='";
+         var end="'></div>";
+         var string ="";
+         for (i=0;i<num;i++){
+             var curID=rowIndex+"-"+i;
+             if (myMines.indexOf(rowIndex + "-" + i)==-1){
+                 string= string+ start + curID + start2 + curID + end;
+             }
+             else{
+                string= string+ startMine + curID + endMine + curID + end;       //this line is the mines
+             }
+         }
+         var line = document.createElement('div');
+         line.innerHTML = "<div style='border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;'>" + string + "</div>" ;
+         document.body.appendChild(line);
+ }
+
+
+function Mine(){
+         alert("Game Over");
+         window.location.reload();
+}
+
+function getSurroundingIDs(id){
+         var onesPlace = parseInt(id.split("-", 2)[0]);
+         var tensPlace = parseInt(id.split("-", 2)[1]);  //split on -, return 2 tokens
+         var IDs = new Array();
+         IDs[IDs.length]=(onesPlace-1)+"-"+(tensPlace-1);
+         IDs[IDs.length]=(onesPlace-1)+"-"+tensPlace;
+	     IDs[IDs.length]=(onesPlace-1)+"-"+(tensPlace+1);
+	     IDs[IDs.length]=onesPlace+"-"+(tensPlace-1);
+         IDs[IDs.length]=onesPlace+"-"+(tensPlace+1);
+	     IDs[IDs.length]=(onesPlace+1)+"-"+(tensPlace-1);
+         IDs[IDs.length]=(onesPlace+1)+"-"+tensPlace;
+         IDs[IDs.length]=(onesPlace+1)+"-"+(tensPlace+1);
+	 return IDs;
+}
+
+
+function getCountOfSurroundingMines(id){
+        var IDs = getSurroundingIDs(id);
+        var count=0;
+        for (var i=0; i<=IDs.length; i++){
+             if(myMines.indexOf(IDs[i])!=-1){count++;}
+        }
+        return count;
+}
+
+function writeRows(loop) {
+         generateMines(loop);
+         var i =0;
+         for (i=0;i<loop;i++){
+             writeOneRow(loop,i);
+         }
+         setNumbers(loop);
+}
+
+function setNumbers(dimension){
+         for (var i=0; i<dimension; i++){
+             for (var j=0; j<dimension; j++){
+                 if (myMines.indexOf(i+"-"+j)!=-1){
+                      document.getElementById(i+"-"+j).innerHTML="m";
+                 }
+                 else{
+              //        document.getElementById(i+"-"+j).innerHTML=""+ getCountOfSurroundingMines(i+"-"+j)+"";
+                 }
+             }
+         }
+}
+
+
+function generateMines(dimension){
+   var size = Math.floor(.15625*dimension*dimension);
+   myMines=new Array();
+   while (myMines.length<size){
+      var  newMine=Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
+      if (myMines.indexOf(newMine)==-1){           //if not in the array
+            myMines[myMines.length]=newMine;
+      }
+   }
+}
+
+
+function notMine(id){
+         document.getElementById(id).style.background="white";
+         var IDs = getSurroundingIDs_NoDiag(id);
+         
+         for (var i=0; i<=IDs.length; i++){
+             if(document.getElementById(IDs[i])){  //if element does not exist, will return false
+                  if(getCountOfSurroundingMines(IDs[i])=="0"){
+                      if (document.getElementById(IDs[i]).style.background!="white"){
+                      	 if (document.getElementById(IDs[i]).innerHTML!="m"){
+                        	 notMine(IDs[i]);
+                         }
+                       }
+                  }
+                  else{
+              		    if (document.getElementById(IDs[i]).innerHTML!="m"){
+                 		     document.getElementById(IDs[i]).innerHTML=getCountOfSurroundingMines(IDs[i]);
+                 		}
+                  }
+             }
+         }
+}
+
+function labelAsMine(id){
+	alert("minesito!");
+}
+
+function getSurroundingIDs_NoDiag(id){
+         var col = parseInt(id.split("-", 2)[1]); //split on -, return 2 tokens
+         var row = parseInt(id.split("-", 2)[0]);
+         var IDs = new Array();
+         IDs[0]= (row+1) + "-" + col ;
+         IDs[1]= (row-1) + "-" + col;
+         IDs[2]= row + "-" +(col-1);
+         IDs[3]= row +"-"+(col+1);
+         return IDs;
+}
+
+</script>
+</head>
+<body>
+<a href="#" onclick="javascript:writeRows(10);return false;">Play</a>
+</body>
+</html>
