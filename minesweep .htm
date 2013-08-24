@@ -2,14 +2,9 @@
 
 <head>
 
-<!--
-//Third-party javascript queue
-//http://code.stephenmorley.org/javascript/queues/ -->
-<script type="text/javascript" src="Queue.js"></script>
-
 <script type="text/JavaScript">
 
-var frontier = new Queue();
+var frontier = [];
 
 //1.0
 function writeOneRow(num, rowIndex) {
@@ -87,23 +82,34 @@ function setNumbers(dimension){
 function generateMines(dimension){
    var size = Math.floor(.15625*dimension*dimension);
    myMines=new Array();
+ /*  myMines[myMines.length]="1-7";
+   myMines[myMines.length]="2-5";
+   myMines[myMines.length]="3-5";
+   myMines[myMines.length]="3-7";
+   myMines[myMines.length]="4-8";
+   myMines[myMines.length]="6-1";
+   myMines[myMines.length]="6-6";
+   myMines[myMines.length]="6-9";
+   myMines[myMines.length]="8-9";
+   myMines[myMines.length]="9-9";*/
    while (myMines.length<size){
       var  newMine=Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
       if (myMines.indexOf(newMine)==-1){           //if not in the array
             myMines[myMines.length]=newMine;
       }
    }
+  
 }
 
 
 function notMine(id){
-		 frontier.enqueue(id);
+		// frontier.push(id);
          document.getElementById(id).style.background="white";
          var IDs = getSurroundingIDs_NoDiag(id);
          for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
                       	 if (document.getElementById(IDs[i]).innerHTML!="m"){
-                        	 frontier.enqueue(IDs[i]); //this needs to be enqued
+                        	 frontier.push(IDs[i]); //this needs to be enqued
                          }
                   }
                   else{
@@ -112,9 +118,9 @@ function notMine(id){
                  		}
                   }
          }
-         var item = frontier.dequeue();      //all squares that can be explored have been added to the frontier
-		 if (!(frontier.isEmpty())){
-		 	notMine(frontier.dequeue());     //perform another round of breadth-first search on the front item in the frontier
+      //   var item = frontier.pop();      //all squares that can be explored have been added to the frontier
+		 if (frontier.length>0){
+		 	notMine(frontier.pop());     //perform another round of breadth-first search on the front item in the frontier
 		 }
 }
 
