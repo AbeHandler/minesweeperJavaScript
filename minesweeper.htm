@@ -53,8 +53,8 @@ function Mine(){
 }
 
 function getSurroundingIDs(id){
-         var onesPlace = (id.split("-", 2)[0]).replace("c","");;
-         var tensPlace = (id.split("-", 2)[1]);  //split on -, return 2 tokens
+         var onesPlace = parseInt((id.split("-", 2)[0]).replace("c",""));
+         var tensPlace = parseInt((id.split("-", 2)[1]));  //split on -, return 2 tokens
          var IDs = new Array();
          for (var row=onesPlace-1;row<=onesPlace+1;row++){
         	 for (var col=tensPlace-1;col<=tensPlace+1;col++){
@@ -63,7 +63,7 @@ function getSurroundingIDs(id){
          		 }
          	}
          }
-	 return IDs;
+	     return IDs;
 }
 
 
@@ -108,23 +108,20 @@ function generateMines(dimension){
    if (dimension==16){size=40;}
    if (dimension==30){size=99;}
    myMines=new Array();
- /*useful for debugging 
-   myMines[myMines.length]="1-7";
-   myMines[myMines.length]="2-5";
-   myMines[myMines.length]="3-5";
-   myMines[myMines.length]="3-7";
-   myMines[myMines.length]="4-8";
-   myMines[myMines.length]="6-1";
-   myMines[myMines.length]="6-6";
-   myMines[myMines.length]="6-9";
-   myMines[myMines.length]="8-9";
-   myMines[myMines.length]="9-9";*/
-   while (myMines.length<size){
+   myMines[myMines.length]="c3-1";
+   myMines[myMines.length]="c2-7";
+   myMines[myMines.length]="c3-7";
+   myMines[myMines.length]="c4-5";
+   myMines[myMines.length]="c5-5";
+   myMines[myMines.length]="c6-5";
+   myMines[myMines.length]="c6-6";
+   myMines[myMines.length]="c7-7";
+  /* while (myMines.length<size){
       var  newMine="c" + Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
       if (myMines.indexOf(newMine)==-1){           //if not in the array
             myMines[myMines.length]=newMine;
       }
-   }
+   }*/
   
 }
 
