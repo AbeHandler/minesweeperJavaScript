@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+
 <html>
 
 <head>
 
+<title>Javascript Minesweeper</title>
+<meta charset="UTF-8">
 <script type="text/JavaScript">
 
 var frontier = [];
@@ -21,17 +25,17 @@ function getOnContextMenu(id){
 
 function getCell(id, mine){
 	if (mine) {
-		return "<div class='cell';" + getID(id) + "; return false; " + getOnContextMenu(id) + "; onclick=\"javascript:Mine()\";></div>";
+		return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:Mine()\"></div>";
 		}
 	else{
-		return "<div class='cell';" + getID(id) + "; return false " + getOnContextMenu(id) + "; onclick=\"javascript:notMine('" + id + "')\"></div>";
+		return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"></div>";
 	}
 }
 
 function writeOneRow(num, rowIndex) {
          var string ="";
          for (i=0;i<num;i++){
-             var curID=rowIndex+"-"+i;
+             var curID="c" + rowIndex+"-"+i;
              if (myMines.indexOf(rowIndex + "-" + i)==-1){
                  string= string + getCell(curID, false);
             }
@@ -85,12 +89,18 @@ function writeRows(row, col) {
 function setNumbers(row, col){
          for (var i=0; i<row; i++){
              for (var j=0; j<col; j++){
+             var id = "c" + i+"-"+j ;
+            	try{
+             		  document.getElementById(id).innerHTML="m";
+             	
                  if (myMines.indexOf(i+"-"+j)!=-1){
                       document.getElementById(i+"-"+j).innerHTML="m";
                  }
                  else{
                       document.getElementById(i+"-"+j).innerHTML=""+ getCountOfSurroundingMines(i+"-"+j)+"";
                  }
+                 }
+                 catch(err){alert(err);}
              }
          }
 }
@@ -181,13 +191,15 @@ function getSurroundingIDs_NoDiag(id){
 
 </script>
 
-<style>
+<style type="text/css">
 #game {background-color:yellow;width:600px;height:360px;}
 .gameRow {margin-left:auto; margin-right:auto; border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;}
 .cell{float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px}
 </style>
 
 </head>
+
+
 <body>
 
 <div id='wholePage'>
