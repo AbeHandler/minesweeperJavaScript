@@ -9,10 +9,10 @@ var frontier = [];
 //1.0
 function writeOneRow(num, rowIndex) {
      
-         var start = "<div onclick='javascript:notMine(\"";
+         var start = "<div class='cell'; onclick='javascript:notMine(\"";
          var start2= "\");return false;' style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px' id='";
-	     var startMine = "<div  onclick=\"javascript:Mine();return false;\" oncontextmenu=\"javascript:labelAsMine('"
-         var endMine = "')\";return false; style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px'; id='";
+	     var startMine = "<div class='cell'; onclick=\"javascript:Mine();return false;\" oncontextmenu=\"javascript:labelAsMine('"
+         var endMine = "')\";return false; id='";
          var end="'></div>";
          var string ="";
          for (i=0;i<num;i++){
@@ -24,7 +24,7 @@ function writeOneRow(num, rowIndex) {
                 string= string+ startMine + curID + endMine + curID + end;       //this line is the mines
              }
          }
-         return "<div style='border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;'>" + string + "</div>" ;
+         return "<div class='gameRow';>" + string + "</div>" ;
  }
 
 
@@ -55,21 +55,21 @@ function getCountOfSurroundingMines(id){
         return count;
 }
 
-function writeRows(loop) {
+function writeRows(row, col) {
 		 document.getElementById('game').innerHTML = ""; //reset the game
-         generateMines(loop);
+         generateMines(row);
          var i =0;
          var gameHTML = "";
-         for (i=0;i<loop;i++){
-             gameHTML = gameHTML + writeOneRow(loop,i);
+         for (i=0;i<row;i++){
+             gameHTML = gameHTML + writeOneRow(col,i);
          }
          document.getElementById('game').innerHTML=gameHTML;
-         setNumbers(loop);
+         setNumbers(row, col);
 }
 
-function setNumbers(dimension){
-         for (var i=0; i<dimension; i++){
-             for (var j=0; j<dimension; j++){
+function setNumbers(row, col){
+         for (var i=0; i<row; i++){
+             for (var j=0; j<col; j++){
                  if (myMines.indexOf(i+"-"+j)!=-1){
                       document.getElementById(i+"-"+j).innerHTML="m";
                  }
@@ -82,7 +82,9 @@ function setNumbers(dimension){
 
 
 function generateMines(dimension){
-   var size = Math.floor(.15625*dimension*dimension);
+   if (dimension==8){size=10;}
+   if (dimension==16){size=40;}
+   if (dimension==30){size=99;}
    myMines=new Array();
  /*useful for debugging 
    myMines[myMines.length]="1-7";
@@ -121,7 +123,6 @@ function notMine(id){
                  		}
                   }
          }
-      //   var item = frontier.pop();      //all squares that can be explored have been added to the frontier
 		 if (frontier.length>0){
 		 	notMine(frontier.pop());     //perform another round of breadth-first search on the front item in the frontier
 		 }
@@ -165,6 +166,13 @@ function getSurroundingIDs_NoDiag(id){
 }
 
 </script>
+
+<style>
+#game {background-color:yellow;width:600px;height:360px;}
+.gameRow {margin-left:auto; margin-right:auto; border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;}
+.cell{float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px}
+</style>
+
 </head>
 <body>
 
@@ -178,9 +186,9 @@ function getSurroundingIDs_NoDiag(id){
 
 		<div id='controls'>
 			<div id='buttons'>
-				<button onclick="javascript:writeRows(10);return false;">Small</button> 
-				<button onclick="javascript:writeRows(15);return false;">Medium</button>
-				<button onclick="javascript:writeRows(20);return false;">Large</button>
+				<button onclick="javascript:writeRows(8,8);return false;">Small</button> 
+				<button onclick="javascript:writeRows(16,16);return false;">Medium</button>
+				<button onclick="javascript:writeRows(16,30);return false;">Large</button>
 			</div>
 		</div>
 
