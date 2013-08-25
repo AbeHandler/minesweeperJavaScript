@@ -53,12 +53,14 @@ function Mine(){
 }
 
 function getSurroundingIDs(id){
-         var onesPlace = parseInt(id.split("-", 2)[0]);
-         var tensPlace = parseInt(id.split("-", 2)[1]);  //split on -, return 2 tokens
+         var onesPlace = (id.split("-", 2)[0]).replace("c","");;
+         var tensPlace = (id.split("-", 2)[1]);  //split on -, return 2 tokens
          var IDs = new Array();
          for (var row=onesPlace-1;row<=onesPlace+1;row++){
         	 for (var col=tensPlace-1;col<=tensPlace+1;col++){
-         		 if(document.getElementById(row + "-" + col)){IDs[IDs.length]=row+"-"+col;}
+         		 if(document.getElementById("c" + row + "-" + col)){ //if the ID exists
+         		 	if (!("c" + row+"-"+col == id)) {IDs[IDs.length]="c" + row+"-"+col;}
+         		 }
          	}
          }
 	 return IDs;
@@ -90,17 +92,12 @@ function setNumbers(row, col){
          for (var i=0; i<row; i++){
              for (var j=0; j<col; j++){
              var id = "c" + i+"-"+j ;
-            	try{
-             		  document.getElementById(id).innerHTML="m";
-             	
-                 if (myMines.indexOf(i+"-"+j)!=-1){
-                      document.getElementById(i+"-"+j).innerHTML="m";
+                 if (myMines.indexOf(id)!=-1){
+                      document.getElementById(id).innerHTML="m";
                  }
                  else{
-                      document.getElementById(i+"-"+j).innerHTML=""+ getCountOfSurroundingMines(i+"-"+j)+"";
+                      document.getElementById(id).innerHTML=""+ getCountOfSurroundingMines(id)+"";
                  }
-                 }
-                 catch(err){alert(err);}
              }
          }
 }
@@ -123,7 +120,7 @@ function generateMines(dimension){
    myMines[myMines.length]="8-9";
    myMines[myMines.length]="9-9";*/
    while (myMines.length<size){
-      var  newMine=Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
+      var  newMine="c" + Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
       if (myMines.indexOf(newMine)==-1){           //if not in the array
             myMines[myMines.length]=newMine;
       }
