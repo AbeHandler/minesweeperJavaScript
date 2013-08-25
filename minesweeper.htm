@@ -6,22 +6,37 @@
 
 var frontier = [];
 
-//1.0
+
+function getOnClick(id){
+	return "onclick='javascript:notMine(\"" + id + "\");'";
+}
+
+function getID(id){
+	return "id='" + id + "'";
+}
+
+function getOnContextMenu(id){
+	return "oncontextmenu=\"javascript:labelAsMine('" + id + "')\"";
+}
+
+function getCell(id, mine){
+	if (mine) {
+		return "<div class='cell';" + getID(id) + "; return false; " + getOnContextMenu(id) + "; onclick=\"javascript:Mine()\";></div>";
+		}
+	else{
+		return "<div class='cell';" + getID(id) + "; return false " + getOnContextMenu(id) + "; onclick=\"javascript:notMine('" + id + "')\"></div>";
+	}
+}
+
 function writeOneRow(num, rowIndex) {
-     
-         var start = "<div class='cell'; onclick='javascript:notMine(\"";
-         var start2= "\");return false;' style='float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px' id='";
-	     var startMine = "<div class='cell'; onclick=\"javascript:Mine();return false;\" oncontextmenu=\"javascript:labelAsMine('"
-         var endMine = "')\";return false; id='";
-         var end="'></div>";
          var string ="";
          for (i=0;i<num;i++){
              var curID=rowIndex+"-"+i;
              if (myMines.indexOf(rowIndex + "-" + i)==-1){
-                 string= string+ start + curID + start2 + curID + end;
-             }
+                 string= string + getCell(curID, false);
+            }
              else{
-                string= string+ startMine + curID + endMine + curID + end;       //this line is the mines
+                string= string + getCell(curID, true);      //this line is the mines
              }
          }
          return "<div class='gameRow';>" + string + "</div>" ;
@@ -56,8 +71,8 @@ function getCountOfSurroundingMines(id){
 }
 
 function writeRows(row, col) {
+		 generateMines(row);
 		 document.getElementById('game').innerHTML = ""; //reset the game
-         generateMines(row);
          var i =0;
          var gameHTML = "";
          for (i=0;i<row;i++){
@@ -108,7 +123,6 @@ function generateMines(dimension){
 
 
 function notMine(id){
-		// frontier.push(id);
          document.getElementById(id).style.background="white";
          var IDs = getSurroundingIDs_NoDiag(id);
          for (var i=0; i<IDs.length; i++){
@@ -180,8 +194,12 @@ function getSurroundingIDs_NoDiag(id){
 
 	<div id='gamePanel'>
 
-		<div id='game'>
+		<div id='top'>
 
+			<div id='game'>
+
+			</div>
+		
 		</div>
 
 		<div id='controls'>
