@@ -122,7 +122,6 @@ function generateMines(rows, cols){
       var  newMine="c" + Math.ceil(Math.random()*(rows-1)) + "-" + Math.ceil(Math.random()*(cols-1));
       if (myMines.indexOf(newMine)==-1){           //if not in the array
             myMines.push(newMine);
-            alert(myMines.length);
       }
    }
    var myMinesCopy=myMines;
@@ -168,9 +167,17 @@ function labelAsMine(e){
 	else if (e.srcElement) targ = e.srcElement;
 	if (targ.nodeType == 3)         // for a Safari bug
 		targ = targ.parentNode;
-	document.getElementById(targ.id).style.background="red";
+	if (discoveredMines.indexOf(targ)==-1){
+		document.getElementById(targ.id).style.background="red";
+	}
+	else {
+		document.getElementById(targ.id).style.background="white";  //mine is undiscovered  //todo find out how to remove it
+	}
+	
 	if (myMines.indexOf(targ)==-1){
-		discoveredMines.push(targ);
+		if (discoveredMines.indexOf(targ)==-1){  //can't discover the same mine twice
+			discoveredMines.push(targ.id);
+		}
 	}
 	
 	checkForWin();
@@ -179,10 +186,10 @@ function labelAsMine(e){
 
 function checkForWin(){
 	
-	alert(myMines.length);
-	alert(discoveredMines.length);
 	if (discoveredMines.length==myMines.length){
 		for (var i=0; i<myMines.length; i++){
+			var myMinesCopy = myMines;
+			var myDisMinesCopy = discoveredMines;
 			if (discoveredMines.indexOf(myMines[i])==-1){
 				return false;
 			}
