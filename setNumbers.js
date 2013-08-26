@@ -12,3 +12,13 @@ function setNumbers(row, col){
              }
          }
 }
+
+
+  /*   myMines[myMines.length]="c3-1";
+   myMines[myMines.length]="c2-7";
+   myMines[myMines.length]="c3-7";
+   myMines[myMines.length]="c4-5";
+   myMines[myMines.length]="c5-5";
+   myMines[myMines.length]="c6-5";
+   myMines[myMines.length]="c6-6";
+   myMines[myMines.length]="c7-7";*/
