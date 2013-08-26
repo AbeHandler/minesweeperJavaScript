@@ -44,7 +44,7 @@ function writeOneRow(num, rowIndex) {
                 string= string + getCell(curID, true);      //this line is the mines
              }
          }
-         return "<div style=\"width:"+ 20 * num +"\" class='gameRow';>" + string + "</div>" ;
+         return "<div style=\"width:"+ 17 * num +"px\" class='gameRow'>" + string + "</div>" ;
  }
 
 
@@ -86,7 +86,7 @@ function writeRows(row, col) {
              gameHTML = gameHTML + writeOneRow(col,i);
          }
          document.getElementById('game').innerHTML=gameHTML;
-         setNumbers(row, col);
+      //   setNumbers(row, col);   for debugging
 }
 
 function setNumbers(row, col){
@@ -124,7 +124,6 @@ function generateMines(rows, cols){
             myMines.push(newMine);
       }
    }
-   var myMinesCopy=myMines;
 }
 
 
@@ -133,7 +132,8 @@ function notMine(id){
          var IDs = getSurroundingIDs_NoDiag(id);
          for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
-                      	 if (document.getElementById(IDs[i]).innerHTML!="m"){
+                      	 if (myMines.indexOf(IDs[i])==-1){
+                      //	 if (document.getElementById(IDs[i]).innerHTML!="m"){
                         	 frontier.push(IDs[i]); //this needs to be enqued
                          }
                   }
@@ -270,7 +270,7 @@ function getSurroundingIDs_NoDiag(id){
     -webkit-box-shadow: inset 0 0 1px 1px #e3e3e3;
     -moz-box-shadow: inset 0 0 1px 1px #e3e3e3;
     box-shadow: inset 0 0 1px 1px #e3e3e3;
-    color: #white; }
+    color: white; }
 </style>
 
 </head>
