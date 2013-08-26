@@ -20,7 +20,8 @@ function getID(id){
 }
 
 function getOnContextMenu(id){
-	return "oncontextmenu=\"javascript:labelAsMine('" + id + "')\"";
+	return "oncontextmenu=\"javascript:labelAsMine()\"";
+//	return "oncontextmenu=\"javascript:labelAsMine('" + id + "')\"";
 }
 
 function getCell(id, mine){
@@ -77,7 +78,7 @@ function getCountOfSurroundingMines(id){
 }
 
 function writeRows(row, col) {
-		 generateMines(row);
+		 generateMines(row, col);
 		 document.getElementById('game').innerHTML = ""; //reset the game
          var i =0;
          var gameHTML = "";
@@ -103,25 +104,25 @@ function setNumbers(row, col){
 }
 
 
-function generateMines(dimension){
-   if (dimension==8){size=10;}
-   if (dimension==16){size=40;}
-   if (dimension==30){size=99;}
+function generateMines(rows, cols){
+   if (rows==8){size=10;}
+   if (rows==16){size=40;}
+   if (rows==30){size=120;}
    myMines=new Array();
-   myMines[myMines.length]="c3-1";
+/*   myMines[myMines.length]="c3-1";
    myMines[myMines.length]="c2-7";
    myMines[myMines.length]="c3-7";
    myMines[myMines.length]="c4-5";
    myMines[myMines.length]="c5-5";
    myMines[myMines.length]="c6-5";
    myMines[myMines.length]="c6-6";
-   myMines[myMines.length]="c7-7";
-  /* while (myMines.length<size){
-      var  newMine="c" + Math.ceil(Math.random()*dimension) + "-" + Math.ceil(Math.random()*dimension);
+   myMines[myMines.length]="c7-7";*/
+   while (myMines.length<size){
+      var  newMine="c" + Math.ceil(Math.random()*rows) + "-" + Math.ceil(Math.random()*cols);
       if (myMines.indexOf(newMine)==-1){           //if not in the array
             myMines[myMines.length]=newMine;
       }
-   }*/
+   }
   
 }
 
@@ -146,37 +147,56 @@ function notMine(id){
 		 }
 }
 
-function labelAsMine(id){
-	document.getElementById(id).style.background="red";
+
+//http://www.javascripter.net/faq/eventpreventdefault.htm
+function cancelDefaultAction(e) {
+	 var evt = e ? e:window.event;
+ 	 if (evt.preventDefault) evt.preventDefault();
+	 evt.returnValue = false;
+ 	 return false;
+}
+
+//Need to do a lot to cancel the default context menu.
+//See http://www.quirksmode.org/js/introevents.html   
+function labelAsMine(e){  
+	var evt = e ? e:window.event;    //capture the window event
+	var targ;          
+	if (!e) var e = window.event;    //this code cancels the default context menu
+	if (e.target) targ = e.target;
+	else if (e.srcElement) targ = e.srcElement;
+	if (targ.nodeType == 3) // defeat Safari bug
+		targ = targ.parentNode;
+	document.getElementById(targ.id).style.background="red";
+	return cancelDefaultAction(evt);
 }
 
 function getSurroundingIDs_NoDiag(id){
-         var col = parseInt(id.split("-", 2)[1]); //split on -, return 2 tokens
-         var row = parseInt(id.split("-", 2)[0]);
+         var col = parseInt(id.split("-", 2)[1].replace("c","")); //split on -, return 2 tokens
+         var row = parseInt(id.split("-", 2)[0].replace("c",""));
          var IDs = new Array();
          var idCount = 0;
           
-         if(document.getElementById((row+1) + "-" + col)){                            //if the element exists
-         	if (document.getElementById((row+1) + "-" + col).style.background!="white"){   //white nodes have been explored
-          	   IDs[idCount]= (row+1) + "-" + col ; 
+         if(document.getElementById("c" + (row+1) + "-" + col)){                            //if the element exists
+         	if (document.getElementById("c" + (row+1) + "-" + col).style.background!="white"){   //white nodes have been explored
+          	   IDs[idCount]= "c" + (row+1) + "-" + col ; 
            	   idCount++;
         	 }    
          }
-         if(document.getElementById((row-1) + "-" + col)){ 
-        	 if (document.getElementById((row-1) + "-" + col).style.background!="white"){   //white nodes have been explored
-        	     IDs[idCount]= (row-1) + "-" + col ; 
+         if(document.getElementById("c" +(row-1) + "-" + col)){ 
+        	 if (document.getElementById("c" + (row-1) + "-" + col).style.background!="white"){   //white nodes have been explored
+        	     IDs[idCount]= "c" + (row-1) + "-" + col ; 
          	    idCount++;
         	 } 
          }
-         if(document.getElementById(row + "-" + (col-1))){ 
-         	if (document.getElementById(row + "-" + (col-1)).style.background!="white"){   //white nodes have been explored
-           	     IDs[idCount]= row + "-" + (col-1) ; 
+         if(document.getElementById("c" + row + "-" + (col-1))){ 
+         	if (document.getElementById("c" + row + "-" + (col-1)).style.background!="white"){   //white nodes have been explored
+           	     IDs[idCount]= "c" + row + "-" + (col-1) ; 
            	     idCount++;
         	 }         
          }
-         if(document.getElementById(row + "-" + (col+1))){ 
-        	 if (document.getElementById(row + "-" + (col+1)).style.background!="white"){   //white nodes have been explored
-            	 IDs[idCount]= row + "-" + (col+1); 
+         if(document.getElementById("c" + row + "-" + (col+1))){ 
+        	 if (document.getElementById("c" + row + "-" + (col+1)).style.background!="white"){   //white nodes have been explored
+            	 IDs[idCount]= "c" + row + "-" + (col+1); 
             	 idCount++;
          	}
          }
