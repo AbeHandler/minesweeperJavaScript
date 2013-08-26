@@ -12,14 +12,18 @@
   var discoveredMines = [];
   var myMines = [];
 
+  /** Returns HTML to handle the onClick event */	
   function getOnClick(id){
-        return "onclick='javascript:notMine(\"" + id + "\");'";
+  	   return "onclick='javascript:notMine();'";
+      //  return "onclick='javascript:notMine(\"" + id + "\");'";
   }
-
+  
+  /** Returns HTML to set the ID */	
   function getID(id){
         return "id='" + id + "'";
   }
 
+  /** Returns HTML to set the onContextMenu event */	
   function getOnContextMenu(id){
         return "oncontextmenu=\"javascript:labelAsMine()\"";
   }
@@ -104,8 +108,10 @@
    }
   }
 
-
-  function notMine(id){
+  //Need to do a lot to cancel the default context menu.
+  //See http://www.quirksmode.org/js/introevents.html  
+  function notMine(e){
+         var id = e;
          document.getElementById(id).style.background="white";
          if (getCountOfSurroundingMines(id)>0){
                  document.getElementById(id).innerHTML=getCountOfSurroundingMines(id);
