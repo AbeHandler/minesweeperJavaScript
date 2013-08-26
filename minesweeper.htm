@@ -45,6 +45,7 @@
 
   function Mine(){
          alert("Game Over");
+		 location.reload();
   }
 
   function getSurroundingIDs(id){
@@ -72,9 +73,10 @@
   }
 
   function writeRows(row, col) {
-                 generateMines(row, col);
-                 document.getElementById('game').innerHTML = ""; //reset the game
-         var i =0;
+         generateMines(row, col);
+         document.getElementById('game').innerHTML = ""; //reset the game
+         discoveredMines = [];							 //reset the discovered mines
+		 var i =0;
          var gameHTML = "";
          for (i=0;i<row;i++){
              gameHTML = gameHTML + writeOneRow(col,i);
