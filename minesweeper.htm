@@ -30,10 +30,10 @@
   /** Returns HTML to set the onContextMenu event */
   function getCell(id, mine){
         if (mine) {
-                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"Mine()\"><\/div>";
+                return "<div class='cell mine'" + getID(id) + "><\/div>";
                 }
         else{
-        		  return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"notMine()\"><\/div>";
+        		  return "<div class='cell notMine'" + getID(id) + "><\/div>";
 //                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"><\/div>";
         }
   }
@@ -56,7 +56,6 @@
 
   function Mine(){
          alert("Game Over");
-         window.location.reload();
   }
 
   function getSurroundingIDs(id){
@@ -92,7 +91,14 @@
              gameHTML = gameHTML + writeOneRow(col,i);
          }
          document.getElementById('game').innerHTML=gameHTML;
-      //   setNumbers(row, col);   for debugging
+		 var mines = document.getElementsByClassName("mine");
+		 for (i = 0; i < mines.length; i++) {
+			mines[i].addEventListener("click", Mine);
+		 }
+		 var notMines = document.getElementsByClassName("notMine");
+		 for (i = 0; i < notMines.length; i++) {
+			notMines[i].addEventListener("click", notMine);
+		 }
   }
 
   function generateMines(rows, cols){
