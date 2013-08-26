@@ -94,10 +94,12 @@
 		 var mines = document.getElementsByClassName("mine");
 		 for (i = 0; i < mines.length; i++) {
 			mines[i].addEventListener("click", Mine);
+			mines[i].addEventListener("contextmenu", labelAsMine);
 		 }
 		 var notMines = document.getElementsByClassName("notMine");
 		 for (i = 0; i < notMines.length; i++) {
 			notMines[i].addEventListener("click", notMine);
+			notMines[i].addEventListener("contextmenu", labelAsMine);
 		 }
   }
 
