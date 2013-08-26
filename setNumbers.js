@@ -1,3 +1,4 @@
+/*this code is useful for debugging but is not part of the live game*/
 
 function setNumbers(row, col){
          for (var i=0; i<row; i++){
