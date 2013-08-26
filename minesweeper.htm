@@ -24,16 +24,16 @@
 
   /** Returns HTML to set the onContextMenu event */	
   function getOnContextMenu(id){
-        return "oncontextmenu=\"javascript:labelAsMine()\"";
+        return "oncontextmenu=\"labelAsMine()\"";
   }
 
   /** Returns HTML to set the onContextMenu event */
   function getCell(id, mine){
         if (mine) {
-                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:Mine()\"><\/div>";
+                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"Mine()\"><\/div>";
                 }
         else{
-        		  return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('')\"><\/div>";
+        		  return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"notMine()\"><\/div>";
 //                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"><\/div>";
         }
   }
