@@ -158,17 +158,20 @@ function labelAsMine(e){
 	else if (e.srcElement) targ = e.srcElement;
 	if (targ.nodeType == 3)         // for a Safari bug
 		targ = targ.parentNode;
-	if (discoveredMines.indexOf(targ)==-1){
+	if (document.getElementById(targ.id).style.background=="white"){  //can't label discovered square as mine
+		return cancelDefaultAction(evt);
+	}
+	if (discoveredMines.indexOf(targ.id)==-1){
 		document.getElementById(targ.id).style.background="red";
-	}
-	else {
-		document.getElementById(targ.id).style.background="white";  //mine is undiscovered  //todo find out how to remove it
-	}
-	
-	if (myMines.indexOf(targ)==-1){
 		if (discoveredMines.indexOf(targ)==-1){  //can't discover the same mine twice
 			discoveredMines.push(targ.id);
 		}
+	}
+	else {
+		document.getElementById(targ.id).style.background="grey";  //mine is undiscovered  //todo find out how to remove it
+		var myCopy = discoveredMines;
+		var index = discoveredMines.indexOf(targ.id);
+		discoveredMines.splice(index, 1);
 	}
 	
 	checkForWin();
