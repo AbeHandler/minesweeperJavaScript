@@ -9,7 +9,8 @@
 <script type="text/JavaScript">
 
 var frontier = [];
-
+var discoveredMines = [];
+var myMines = [];
 
 function getOnClick(id){
 	return "onclick='javascript:notMine(\"" + id + "\");'";
@@ -21,7 +22,6 @@ function getID(id){
 
 function getOnContextMenu(id){
 	return "oncontextmenu=\"javascript:labelAsMine()\"";
-//	return "oncontextmenu=\"javascript:labelAsMine('" + id + "')\"";
 }
 
 function getCell(id, mine){
@@ -105,6 +105,7 @@ function setNumbers(row, col){
 
 
 function generateMines(rows, cols){
+   var size;
    if (rows==8){size=10;}
    if (rows==16){size=40;}
    if (rows==30){size=120;}
@@ -118,12 +119,13 @@ function generateMines(rows, cols){
    myMines[myMines.length]="c6-6";
    myMines[myMines.length]="c7-7";*/
    while (myMines.length<size){
-      var  newMine="c" + Math.ceil(Math.random()*rows) + "-" + Math.ceil(Math.random()*cols);
+      var  newMine="c" + Math.ceil(Math.random()*(rows-1)) + "-" + Math.ceil(Math.random()*(cols-1));
       if (myMines.indexOf(newMine)==-1){           //if not in the array
-            myMines[myMines.length]=newMine;
+            myMines.push(newMine);
+            alert(myMines.length);
       }
    }
-  
+   var myMinesCopy=myMines;
 }
 
 
@@ -164,10 +166,31 @@ function labelAsMine(e){
 	if (!e) var e = window.event;    //this code cancels the default context menu
 	if (e.target) targ = e.target;
 	else if (e.srcElement) targ = e.srcElement;
-	if (targ.nodeType == 3) // defeat Safari bug
+	if (targ.nodeType == 3)         // for a Safari bug
 		targ = targ.parentNode;
 	document.getElementById(targ.id).style.background="red";
+	if (myMines.indexOf(targ)==-1){
+		discoveredMines.push(targ);
+	}
+	
+	checkForWin();
 	return cancelDefaultAction(evt);
+}
+
+function checkForWin(){
+	
+	alert(myMines.length);
+	alert(discoveredMines.length);
+	if (discoveredMines.length==myMines.length){
+		for (var i=0; i<myMines.length; i++){
+			if (discoveredMines.indexOf(myMines[i])==-1){
+				return false;
+			}
+		}
+		alert("You win!");
+		location.reload();
+	}
+	
 }
 
 function getSurroundingIDs_NoDiag(id){
