@@ -35,9 +35,10 @@ function getCell(id, mine){
 
 function writeOneRow(num, rowIndex) {
          var string ="";
+         var myMinesCopy = myMines;
          for (i=0;i<num;i++){
              var curID="c" + rowIndex+"-"+i;
-             if (myMines.indexOf(rowIndex + "-" + i)==-1){
+             if (myMines.indexOf("c" + rowIndex + "-" + i)==-1){
                  string= string + getCell(curID, false);
             }
              else{
@@ -89,21 +90,6 @@ function writeRows(row, col) {
       //   setNumbers(row, col);   for debugging
 }
 
-function setNumbers(row, col){
-         for (var i=0; i<row; i++){
-             for (var j=0; j<col; j++){
-             var id = "c" + i+"-"+j ;
-                 if (myMines.indexOf(id)!=-1){
-                      document.getElementById(id).innerHTML="m";
-                 }
-                 else{
-                      document.getElementById(id).innerHTML=""+ getCountOfSurroundingMines(id)+"";
-                 }
-             }
-         }
-}
-
-
 function generateMines(rows, cols){
    var size;
    if (rows==8){size=10;}
@@ -129,22 +115,27 @@ function generateMines(rows, cols){
 
 function notMine(id){
          document.getElementById(id).style.background="white";
+         if (getCountOfSurroundingMines(id)>0){
+        	 document.getElementById(id).innerHTML=getCountOfSurroundingMines(id);
+         }
+         else{
          var IDs = getSurroundingIDs_NoDiag(id);
          for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
                       	 if (myMines.indexOf(IDs[i])==-1){
-                      //	 if (document.getElementById(IDs[i]).innerHTML!="m"){
                         	 frontier.push(IDs[i]); //this needs to be enqued
                          }
                   }
                   else{
-              		    if (document.getElementById(IDs[i]).innerHTML!="m"){
+              		     if (myMines.indexOf(IDs[i])==-1){            		     	
                  		     document.getElementById(IDs[i]).innerHTML=getCountOfSurroundingMines(IDs[i]);
-                 		}
+                 		     document.getElementById(IDs[i]).style.background="white";
+                 		 }
                   }
          }
 		 if (frontier.length>0){
 		 	notMine(frontier.pop());     //perform another round of breadth-first search on the front item in the frontier
+		 }
 		 }
 }
 
@@ -237,11 +228,11 @@ function getSurroundingIDs_NoDiag(id){
 
 <style type="text/css">
 #gamePanel{width:518px;border:1px; border-color:black; border-style:solid; margin-right:auto;margin-left:auto; }
-#game {width:518px;height:360px;}
+#game {width:518px;height:360px;margin-top:7px}
 #controls {border-top:1px; border-color:black; border-top-style:solid}
 #buttons {width:460px; margin-right:auto;margin-left:auto;}
-.gameRow {margin-left:auto; margin-right:auto; border-style:solid; text-align:center; border-color:white; border-width:1px; height:20px;}
-.cell{float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px}
+.gameRow {margin-left:auto; margin-right:auto; text-align:center; height:20px;margin-top:-3px}
+.cell{float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px; }
 .button{
   background: white;
   border: 1px solid #bbb;
