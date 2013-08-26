@@ -15,7 +15,6 @@
   /** Returns HTML to handle the onClick event */	
   function getOnClick(id){
   	   return "onclick='javascript:notMine();'";
-      //  return "onclick='javascript:notMine(\"" + id + "\");'";
   }
   
   /** Returns HTML to set the ID */	
@@ -28,12 +27,14 @@
         return "oncontextmenu=\"javascript:labelAsMine()\"";
   }
 
+  /** Returns HTML to set the onContextMenu event */
   function getCell(id, mine){
         if (mine) {
                 return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:Mine()\"><\/div>";
                 }
         else{
-                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"><\/div>";
+        		  return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('')\"><\/div>";
+//                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"><\/div>";
         }
   }
 
@@ -111,7 +112,15 @@
   //Need to do a lot to cancel the default context menu.
   //See http://www.quirksmode.org/js/introevents.html  
   function notMine(e){
-         var id = e;
+  
+  		 var evt = e ? e:window.event;    //capture the window event
+         var targ;          
+         if (!e) var e = window.event;    //this code cancels the default context menu
+         if (e.target) targ = e.target;
+         else if (e.srcElement) targ = e.srcElement;
+         var id;
+         if(typeof targ === "undefined"){id=e;}
+         else {id=targ.id;}
          document.getElementById(id).style.background="white";
          if (getCountOfSurroundingMines(id)>0){
                  document.getElementById(id).innerHTML=getCountOfSurroundingMines(id);
