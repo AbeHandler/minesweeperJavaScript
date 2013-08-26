@@ -11,20 +11,10 @@
   var frontier = [];
   var discoveredMines = [];
   var myMines = [];
-
-  /** Returns HTML to handle the onClick event */	
-  function getOnClick(id){
-  	   return "onclick='javascript:notMine();'";
-  }
   
   /** Returns HTML to set the ID */	
   function getID(id){
         return "id='" + id + "'";
-  }
-
-  /** Returns HTML to set the onContextMenu event */	
-  function getOnContextMenu(id){
-        return "oncontextmenu=\"labelAsMine()\"";
   }
 
   /** Returns HTML to set the onContextMenu event */
@@ -34,8 +24,7 @@
                 }
         else{
         		  return "<div class='cell notMine'" + getID(id) + "><\/div>";
-//                return "<div class='cell'" + getID(id) + " " + getOnContextMenu(id) + " onclick=\"javascript:notMine('" + id + "')\"><\/div>";
-        }
+       }
   }
 
   function writeOneRow(num, rowIndex) {
@@ -129,7 +118,7 @@
          var id;
          if(typeof targ === "undefined"){id=e;}
          else {id=targ.id;}
-         document.getElementById(id).style.background="white";
+         document.getElementById(id).style.backgroundColor="white";
          if (getCountOfSurroundingMines(id)>0){
                  document.getElementById(id).innerHTML=getCountOfSurroundingMines(id);
          }
@@ -138,7 +127,10 @@
          for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
                          if (myMines.indexOf(IDs[i])==-1){
-                                 frontier.push(IDs[i]); //this needs to be enqued
+                                 if (frontier.indexOf(IDs[i])==-1){        //don't repeat elements on the frontier
+									if (!(document.getElementById(IDs[i]).style.backgroundColor=="white")) //don't a
+										{frontier.push(IDs[i]);} //this needs to be enqued
+								}
                          }
                   }
                   else{
@@ -173,17 +165,17 @@
         else if (e.srcElement) targ = e.srcElement;
         if (targ.nodeType == 3)         // for a Safari bug
                 targ = targ.parentNode;
-        if (document.getElementById(targ.id).style.background=="white"){  //can't label discovered square as mine
+        if (document.getElementById(targ.id).style.backgroundColor=="white"){  //can't label discovered square as mine
                 return cancelDefaultAction(evt);
         }
         if (discoveredMines.indexOf(targ.id)==-1){
-                document.getElementById(targ.id).style.background="red";
+                document.getElementById(targ.id).style.backgroundColor="red";
                 if (discoveredMines.indexOf(targ)==-1){  //can't discover the same mine twice
                         discoveredMines.push(targ.id);
                 }
         }
         else {
-                document.getElementById(targ.id).style.background="grey";  //mine is undiscovered  //todo find out how to remove it
+                document.getElementById(targ.id).style.backgroundColor="grey";  //mine is undiscovered  //todo find out how to remove it
                 var myCopy = discoveredMines;
                 var index = discoveredMines.indexOf(targ.id);
                 discoveredMines.splice(index, 1);
@@ -251,9 +243,9 @@
   #controls {border-top:1px; border-color:black; border-top-style:solid}
   #buttons {width:460px; margin-right:auto;margin-left:auto;}
   .gameRow {margin-left:auto; margin-right:auto; text-align:center; height:20px;margin-top:-3px}
-  .cell{float:left; background-color:grey; border-style:solid; border-width:1px; height:15px; width: 15px; }
+  .cell{float:left; background-Color:grey; border-style:solid; border-width:1px; height:15px; width: 15px; }
   .button{
-  background: white;
+  backgroundColor: white;
   border: 1px solid #bbb;
   border-radius: 3px;
   color: grey;
