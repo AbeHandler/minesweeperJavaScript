@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Javascript Minesweeper</title>
     <meta charset="UTF-8" />
     <script type="text/JavaScript">
-    	  var numRows;
+//<![CDATA[
+
+    var numRows;
     var numCols;
     var gameMines = [];   //the IDs of the DIVs that hold mines     
     var discoveredMines = []; //all of the mines user has found at any point in the game
@@ -23,8 +26,7 @@
  		M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
  		return M;
  	};
- 	
- 	  
+    
     /** Creates a game */  
     function writeRows(row, col) {    
     	 var browser=getBrowser();
@@ -256,8 +258,8 @@
         }
         
     }
- 	
- 	
+
+    //]]>
     </script>
     <style type="text/css">
 /*<![CDATA[*/
