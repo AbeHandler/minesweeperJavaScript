@@ -214,7 +214,7 @@
         }
         if (discoveredMines.indexOf(id)==-1){
                 document.getElementById(id).style.backgroundColor="red";
-                if (discoveredMines.indexOf(targ)==-1){  //can't discover the same mine twice
+                if (discoveredMines.indexOf(id)==-1){  //can't discover the same mine twice
                         discoveredMines.push(id);
                 }
         }
@@ -226,7 +226,7 @@
         }
         
         checkForWin();
-        return cancelDefaultAction(evt);
+        return cancelDefaultAction(e);
     }
 
 
