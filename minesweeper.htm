@@ -7,7 +7,8 @@
     <script type="text/JavaScript">
 //<![CDATA[
 
-
+    var numRows;
+    var numCols;
     var gameMines = [];   //the IDs of the DIVs that hold mines     
     var discoveredMines = []; //all of the mines user has found at any point in the game
 
@@ -17,6 +18,8 @@
 
     /** Creates a game */  
     function writeRows(row, col) {
+    	 numRows=row;
+    	 numCols=col;
          generateMines(row, col);
          document.getElementById('game').innerHTML = ""; //reset the game
          discoveredMines = [];                           //reset the discovered mines
@@ -74,12 +77,12 @@
     if (rows==30){size=120;}
     gameMines=new Array();
 
-    while (gameMines.length<size){
-      var  newMine="c" + Math.ceil(Math.random()*(rows-1)) + "-" + Math.ceil(Math.random()*(cols-1));
-      if (gameMines.indexOf(newMine)==-1){           //if not in the array
-            gameMines.push(newMine);
-      }
-    }
+    	while (gameMines.length<size){
+    	var  newMine="c" + Math.ceil(Math.random()*(rows-1)) + "-" + Math.ceil(Math.random()*(cols-1));
+      		if (gameMines.indexOf(newMine)==-1){           //if not in the array
+      	       gameMines.push(newMine);
+     	 	}
+    	}
     }
 
     /** Fires when user clicks a mine */ 
@@ -88,6 +91,7 @@
          location.reload();
     }
 
+
     /** Returns the IDs of the squares directly adjacent to the ID*/ 
     function getSurroundingIDs(id, includeDiagonals){
          var onesPlace = parseInt((id.split("-", 2)[0]).replace("c",""));
@@ -95,7 +99,10 @@
          var IDs = new Array();
          for (var row=onesPlace-1;row<=onesPlace+1;row++){
                  for (var col=tensPlace-1;col<=tensPlace+1;col++){
-                    if (row>=0 && col>=0){IDs[IDs.length]="c" + row +"-"+ col};  //create IDs for all where row, col >0
+                 	 //only add IDs that are on the board. i.e. 0<=id<=num of rows or cols in board.
+                    if (row>=0 && col>=0 && row<numRows && col<numCols){
+                    	IDs[IDs.length]="c" + row +"-"+ col
+                    }; 
                 }
          }
          var index = IDs.indexOf(id);  //these lines remove the input ID from the output array
@@ -104,22 +111,8 @@
             IDs = removeDiagonals(id, IDs)
          }
          
-         IDs = removeNonexistentIDs(id, IDs); //the logic above might generate non-existent IDs. They have to be removed   
          return IDs;
     }
-
-    /*Removes any IDs from array that do not exist*/
-    function removeNonexistentIDs(id, IDs){
-         for (var j=0;j<IDs.length;j++){
-              var myElem = document.getElementById(IDs[j]);
-              if (myElem == null){                      //if element does not exist
-                 var index = IDs.indexOf(IDs[j]) ;     //then find the index of the id 
-                 IDs.splice(index, 1);             //and pull it out of the array
-                 }
-         }
-         return IDs;
-    }
-
 
     //*takes an ring of IDs surround the ID and removes the IDs at each corner*/
     function removeDiagonals(id, IDs){
@@ -141,6 +134,7 @@
 
     }
 
+
     /** How many mines are directly adjacent to the square? */ 
     function getCountOfSurroundingMines(id){
         var IDs = getSurroundingIDs(id, true);
@@ -150,6 +144,7 @@
         }
         return count;
     }
+
 
     /** Determine what mine was clicked.*/ 
     function getID(e){
@@ -165,6 +160,7 @@
          else {thisIDwasClicked=targ.id;}
          return thisIDwasClicked;
     }
+
 
     /** Fires when user clicks on a non-mine.*/ 
     function notMine(e){
@@ -182,6 +178,7 @@
                                     if (!(document.getElementById(IDs[i]).style.backgroundColor=="white")) //don't add the already explored items
                                         {frontier.push(IDs[i]);} //this needs to be enqued
                                 }
+                                
                          }
                   }
                   else{
@@ -196,6 +193,7 @@
                  }
                  }
     }
+    
 
     /*this code cancels the default action from the browser. In this case, the context menu*/
     //See http://www.javascripter.net/faq/eventpreventdefault.htm
@@ -205,6 +203,7 @@
          evt.returnValue = false;
          return false;
     }
+    
 
     //Need to do a lot to cancel the default context menu.
     //See http://www.quirksmode.org/js/introevents.html   
@@ -229,6 +228,7 @@
         checkForWin();
         return cancelDefaultAction(evt);
     }
+
 
     /*called after user IDs a mine by left clicking. Determines if game is over*/
     function checkForWin(){
