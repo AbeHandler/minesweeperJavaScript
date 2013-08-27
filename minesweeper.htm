@@ -28,6 +28,7 @@
     /** Creates a game */  
     function writeRows(row, col) {    
     	 var browser=getBrowser();
+    	 if(!(browser[0]=="Firefox" || browser[1])){alert("This game has only been tested in Firefox and Chrome. It might not work in other browsers like Opera, Safari or IE");}
     	 numRows=row;
     	 numCols=col;
          generateMines(row, col);
