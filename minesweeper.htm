@@ -111,11 +111,12 @@
 
   /*Removes any IDs from array that do not exist*/
   function removeNonexistentIDs(id, IDs){
-  		 for (var j=0;j<IDs.length;j++){
-    		 if (gameMines.indexOf(IDs[j])==-1){   //if the ID does not exist
+  		 for (var j=0;j<=IDs.length;j++){
+    		  var myElem = document.getElementById(IDs[j]);
+		      if (myElem == null){						//if element does not exist
     			 var index = IDs.indexOf(IDs[j]) ;     //then find the index of the id 
     			 IDs.splice(index, 1);             //and pull it out of the array
-    		 }
+    			 }
          }
          return IDs;
   }
@@ -179,7 +180,7 @@
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
                          if (gameMines.indexOf(IDs[i])==-1){
                                  if (frontier.indexOf(IDs[i])==-1){        //don't repeat elements on the frontier
-									if (!(document.getElementById(IDs[i]).style.backgroundColor=="white")) //don't a
+									if (!(document.getElementById(IDs[i]).style.backgroundColor=="white")) //don't add the already explored items
 										{frontier.push(IDs[i]);} //this needs to be enqued
 								}
                          }
