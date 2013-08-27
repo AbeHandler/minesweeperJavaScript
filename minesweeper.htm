@@ -111,7 +111,7 @@
 
   /*Removes any IDs from array that do not exist*/
   function removeNonexistentIDs(id, IDs){
-  		 for (var j=0;j<=IDs.count;j++){
+  		 for (var j=0;j<IDs.length;j++){
     		 if (gameMines.indexOf(IDs[j])==-1){   //if the ID does not exist
     			 var index = IDs.indexOf(IDs[j]) ;     //then find the index of the id 
     			 IDs.splice(index, 1);             //and pull it out of the array
