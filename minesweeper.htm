@@ -75,12 +75,23 @@
    if (rows==16){size=40;}
    if (rows==30){size=120;}
    gameMines=new Array();
-   while (gameMines.length<size){
+   gameMines.push("c1-3");
+   gameMines.push("c1-6");
+   gameMines.push("c2-2");
+   gameMines.push("c3-4");
+   gameMines.push("c5-2");
+   gameMines.push("c5-4");
+   gameMines.push("c5-6");
+   gameMines.push("c5-7");
+   gameMines.push("c6-1");
+   gameMines.push("c7-3");
+   
+/*   while (gameMines.length<size){
       var  newMine="c" + Math.ceil(Math.random()*(rows-1)) + "-" + Math.ceil(Math.random()*(cols-1));
       if (gameMines.indexOf(newMine)==-1){           //if not in the array
             gameMines.push(newMine);
       }
-   }
+   }*/
   }
   
   /** Fires when user clicks a mine */ 
@@ -96,7 +107,7 @@
          var IDs = new Array();
          for (var row=onesPlace-1;row<=onesPlace+1;row++){
                  for (var col=tensPlace-1;col<=tensPlace+1;col++){
-                 	IDs[IDs.length]="c" + row+"-"+col;  
+                 	if (row>=0 && col>=0){IDs[IDs.length]="c" + row +"-"+ col};  //create IDs for all where row, col >0
                 }
          }
          var index = IDs.indexOf(id);  //these lines remove the input ID from the output array
@@ -111,7 +122,7 @@
 
   /*Removes any IDs from array that do not exist*/
   function removeNonexistentIDs(id, IDs){
-  		 for (var j=0;j<=IDs.length;j++){
+  		 for (var j=0;j<IDs.length;j++){
     		  var myElem = document.getElementById(IDs[j]);
 		      if (myElem == null){						//if element does not exist
     			 var index = IDs.indexOf(IDs[j]) ;     //then find the index of the id 
@@ -133,10 +144,10 @@
  		 var topLeft = IDs.indexOf("c" + (row+1) + "-" + (col-1)) ; 
          var bottomRight = IDs.indexOf("c" + (row-1) + "-" + (col+1)) ; 
          var bottomLeft = IDs.indexOf("c" + (row-1) + "-" + (col-1)) ; 
-         IDs.splice(topRight, 1);
-         IDs.splice(topLeft, 1);
-         IDs.splice(bottomRight, 1);
-         IDs.splice(bottomLeft, 1);
+         if (topRight>-1){IDs.splice(topRight, 1);}
+         if (topLeft>-1){IDs.splice(topLeft, 1);}
+         if (bottomRight>-1){IDs.splice(bottomRight, 1);}
+         if (bottomLeft>-1){IDs.splice(bottomLeft, 1);}
          
          return IDs;
  
