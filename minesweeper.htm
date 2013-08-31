@@ -4,16 +4,17 @@
     <title>Javascript Minesweeper</title>
     <meta charset="UTF-8" />
     <script type="text/JavaScript">
-    	  var numRows;
-    var numCols;
-    var gameMines = [];   //the IDs of the DIVs that hold mines     
+    
+    var numRows;			//the number of rows in the game
+    var numCols;			//the number of columns in the game 
+    var gameMines = [];     //the IDs of the DIVs that hold mines     
     var discoveredMines = []; //all of the mines user has found at any point in the game
     
     //when the user clicks on a blank square, this array stores the
     //adjacent squares that need to get automatically checked for mines 
     var frontier = [];        
  
-    /*Detects the users browser.
+    /*Detects the users' browser.
 	via http://stackoverflow.com/questions/2400935/browser-detection-in-javascript
     */
 	function getBrowser() {  
@@ -28,7 +29,7 @@
     /** Creates a game */  
     function writeRows(row, col) {    
     	 var browser=getBrowser();
-    	 if(!(browser[0]=="Firefox" || browser[1])){alert("This game has only been tested in Firefox and Chrome. It might not work in other browsers like Opera, Safari or IE");}
+    	 if(!(browser[0]=="Firefox" || browser[0]=="Chrome")){alert("This game has only been tested in Firefox and Chrome. It might not work in other browsers like Opera, Safari or IE");}
     	 numRows=row;
     	 numCols=col;
          generateMines(row, col);
@@ -75,8 +76,8 @@
                 return "<div class='cell mine' id='" + id + "' ><\/div>";
                 }
         else{
-                  return "<div class='cell notMine' id='" + id + "' ><\/div>";
-       }
+                return "<div class='cell notMine' id='" + id + "' ><\/div>";
+        }
     }
 
 
@@ -181,28 +182,27 @@
                  document.getElementById(id).innerHTML=getCountOfSurroundingMines(id);
          }
          else{
-         var IDs = getSurroundingIDs(id, false);
-         for (var i=0; i<IDs.length; i++){
+      		 var IDs = getSurroundingIDs(id, false);
+         	 for (var i=0; i<IDs.length; i++){
                   if(getCountOfSurroundingMines(IDs[i])=="0"){
                          if (gameMines.indexOf(IDs[i])==-1){
                                  if (frontier.indexOf(IDs[i])==-1){        //don't repeat elements on the frontier
                                     if (!(document.getElementById(IDs[i]).style.backgroundColor=="white")) //don't add the already explored items
                                         {frontier.push(IDs[i]);} //this needs to be enqued
-                                }
-                                
+                                }                       
                          }
                   }
                   else{
-                             if (gameMines.indexOf(IDs[i])==-1){                                  
+                         if (gameMines.indexOf(IDs[i])==-1){                                  
                                      document.getElementById(IDs[i]).innerHTML=getCountOfSurroundingMines(IDs[i]);
                                      document.getElementById(IDs[i]).style.background="white";
                                  }
                   }
-         }
-                 if (frontier.length>0){
-                        notMine(frontier.pop());     //perform another round of breadth-first search on the front item in the frontier
-                 }
-                 }
+         	  } //end for loop
+         	 if (frontier.length>0){
+                 notMine(frontier.pop());     //perform another round of breadth-first search on the front item in the frontier
+          	 }
+          }
     }
     
 
